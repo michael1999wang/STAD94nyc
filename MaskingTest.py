@@ -57,6 +57,7 @@ def region_of_interest(image): # isolating the triangle of focus in the picture
     return masked_image
 
 frame = cv2.imread('test_image.jpg')
+cv2.imshow("Output", frame)
 canny_image = canny(frame)
 cropped_canny = region_of_interest(canny_image)
 lines = cv2.HoughLinesP(cropped_canny, 2, np.pi/180, 100, np.array([]), minLineLength=40, maxLineGap=5)
