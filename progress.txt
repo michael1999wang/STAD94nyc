@@ -1,0 +1,12 @@
+BEFORE 13/05/2020
+    Added proposal from email for reference
+    Added test media ripped off livestream
+    Added test still-frame for single image analysis
+    Created masking test
+    Added threshold testing tool for hue, saturation, and brightness to analyze required values to correctly layer image
+
+13/05/2020 (Creation of this txt file)
+    Added a facial recognition testing tool
+    Added a body recognition testing tool
+    Added Tokyo test footage, an easier clip to analyze due to closer proximity
+    Added haarcascades library for adaptive boosting classifiers
