@@ -23,20 +23,21 @@ cascade = cv2.CascadeClassifier("haarcascades/haarcascade_fullbody.xml")
 
 
 # SAMPLE VIDEO
-cap = cv2.VideoCapture("media/tokyo.mp4")
+cap = cv2.VideoCapture("media/nyc.mp4")
 while(cap.isOpened()):
     ret, frame = cap.read()
     if ret == True:
         imgGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        faces = cascade.detectMultiScale(imgGray, 1.05, 1)
-        for (x, y, w, h) in faces:
+        bodies = cascade.detectMultiScale(imgGray, scaleFactor = 1.05, maxSize = (70, 100))
+        for (x, y, w, h) in bodies:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
         frame = cv2.resize(frame, (1280, 720))
         cv2.imshow("Result", frame)
-        cv2.waitKey(1)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
     else:
         break
 cap.release()
 cv2.destroyAllWindows() 
 
-#hello
+# hello
