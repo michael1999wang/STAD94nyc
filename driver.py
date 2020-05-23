@@ -1,12 +1,14 @@
 import tkinter as tk
+from Focus import Focus
 from tkinter import filedialog
 
 class Main:
-    # Default values so other methods don't throw errors
+    # Default values
     samplePath, videoPath, pathText = "", "", ""
-    root, openSampleButton, openVideoButton, startButton, pathText = None, None, None, None, None
+    root, openSampleButton, openVideoButton, focusButton, startButton, pathText = None, None, None, None, None, None
+    focus = None
 
-
+    # Constructor
     def __init__(self):
         # Initializing root window information
         self.root = tk.Tk()
@@ -16,12 +18,17 @@ class Main:
         # Creating buttons with respective function calls
         self.openSampleButton = tk.Button(self.root, text="Open Sample", command = lambda: self.setSamplePath())
         self.openVideoButton = tk.Button(self.root, text="Open Video", command = lambda: self.setVideoPath())
+        self.focusButton = tk.Button(self.root, text="Focus", command = lambda: self.execFocus())
         self.startButton = tk.Button(self.root, text="Start Analysis", command = lambda: self.analysis())
+        
+        # Disables buttons until they have information to work with
+        self.focusButton.config(state=tk.DISABLED)
         self.startButton.config(state=tk.DISABLED)
 
         # Displaying buttons
         self.openSampleButton.pack()
         self.openVideoButton.pack()
+        self.focusButton.pack()
         self.startButton.pack()
 
         # Default path text
@@ -36,6 +43,7 @@ class Main:
     # Prompts file selection window and sets samplePath
     def setSamplePath(self):
         self.samplePath = filedialog.askopenfilename()
+        self.enableFocus()
         self.enableAnaylsis()
         self.updatePathText()
 
@@ -47,15 +55,28 @@ class Main:
         self.updatePathText()
 
 
+    # Brings user to a modular selection page to map out dimensions of where to track during learning
+    def execFocus(self):
+        self.focus = Focus(self.samplePath)
+
+
     # Updates the path text
     def updatePathText(self):
         self.pathText.delete("1.0", tk.END)
         self.pathText.insert(tk.CURRENT, "\nSample Path: " + self.samplePath + "\n\nVideo Path: " + self.videoPath)
 
 
-    # Disables/normalizes button based on file selection status
+    # Enables the focus button after a sample has been chosen
+    def enableFocus(self):
+        if self.samplePath != "":
+            self.focusButton.config(state=tk.NORMAL)
+        else:
+            self.focusButton.config(state=tk.DISABLED)
+
+
+    # Normalizes/disables button based on file selection status
     def enableAnaylsis(self):
-        if self.samplePath is not None and self.videoPath is not None:
+        if self.samplePath != "" and self.videoPath != "":
             self.startButton.config(state=tk.NORMAL)
         else:
             self.startButton.config(state=tk.DISABLED)
