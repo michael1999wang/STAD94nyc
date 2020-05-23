@@ -4,16 +4,16 @@ from tkinter import filedialog
 
 class Main:
     # Default values
-    samplePath, videoPath, pathText = "", "", ""
+    samplePath, videoPath, pathText, shapeText = "", "", "", ""
     root, openSampleButton, openVideoButton, focusButton, startButton, pathText = None, None, None, None, None, None
-    focus = None
+    focus, shapes = None, None
 
     # Constructor
     def __init__(self):
         # Initializing root window information
         self.root = tk.Tk()
         self.root.title("STAD94")
-        self.root.geometry("250x250")
+        self.root.geometry("500x350")
 
         # Creating buttons with respective function calls
         self.openSampleButton = tk.Button(self.root, text="Open Sample", command = lambda: self.setSamplePath())
@@ -33,7 +33,7 @@ class Main:
 
         # Default path text
         self.pathText = tk.Text(self.root)
-        self.updatePathText()
+        self.updateText()
         self.pathText.pack()
 
         # End
@@ -45,25 +45,28 @@ class Main:
         self.samplePath = filedialog.askopenfilename()
         self.enableFocus()
         self.enableAnaylsis()
-        self.updatePathText()
+        self.updateText()
 
 
     # Prompts file selection window and sets videoPath
     def setVideoPath(self):
         self.videoPath = filedialog.askopenfilename()
         self.enableAnaylsis()
-        self.updatePathText()
+        self.updateText()
 
 
     # Brings user to a modular selection page to map out dimensions of where to track during learning
     def execFocus(self):
         self.focus = Focus(self.samplePath)
+        self.shapes = self.focus.getShapes()
+        self.shapeText = self.focus.shapeString()
+        self.updateText()
 
 
     # Updates the path text
-    def updatePathText(self):
+    def updateText(self):
         self.pathText.delete("1.0", tk.END)
-        self.pathText.insert(tk.CURRENT, "\nSample Path: " + self.samplePath + "\n\nVideo Path: " + self.videoPath)
+        self.pathText.insert(tk.CURRENT, "\nSample Path: " + self.samplePath + "\n\nVideo Path: " + self.videoPath + "\n\nShape Coordinates: " + self.shapeText)
 
 
     # Enables the focus button after a sample has been chosen
