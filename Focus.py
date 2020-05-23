@@ -33,7 +33,7 @@ class Focus:
                 self.shapes.append(self.points)
 
                 # Debugging lines
-                print(self.shapes)
+                # print(self.shapes)
                 
                 # Draw the polygon
                 cv2.polylines(self.image, [pts], True, color, thickness, lineType = cv2.LINE_AA)

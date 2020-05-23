@@ -1,12 +1,13 @@
 import tkinter as tk
-from Focus import Focus
 from tkinter import filedialog
+from Focus import Focus
+from Analysis import Analysis
 
 class Main:
     # Default values
     samplePath, videoPath, pathText, shapeText = "", "", "", ""
     root, openSampleButton, openVideoButton, focusButton, startButton, pathText = None, None, None, None, None, None
-    focus, shapes = None, None
+    focus, shapes, analysis = None, None, None
 
     # Constructor
     def __init__(self):
@@ -19,7 +20,7 @@ class Main:
         self.openSampleButton = tk.Button(self.root, text="Open Sample", command = lambda: self.setSamplePath())
         self.openVideoButton = tk.Button(self.root, text="Open Video", command = lambda: self.setVideoPath())
         self.focusButton = tk.Button(self.root, text="Focus", command = lambda: self.execFocus())
-        self.startButton = tk.Button(self.root, text="Start Analysis", command = lambda: self.analysis())
+        self.startButton = tk.Button(self.root, text="Start Analysis", command = lambda: self.execAnalysis())
         
         # Disables buttons until they have information to work with
         self.focusButton.config(state=tk.DISABLED)
@@ -85,9 +86,10 @@ class Main:
             self.startButton.config(state=tk.DISABLED)
 
 
-    # Call machine learning object to start analysis
-    def analysis(self):
-        pass
+    # Call machine learning module to start analysis
+    def execAnalysis(self):
+        self.analysis = Analysis(self.videoPath)
+        self.analysis.bodyRecognition()
 
 
 if __name__ == "__main__":
