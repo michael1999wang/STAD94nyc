@@ -6,7 +6,7 @@ from Analysis import Analysis
 class Main:
     # Default values
     samplePath, videoPath, pathText, shapeText = "", "", "", ""
-    root, openSampleButton, openVideoButton, focusButton, startButton, pathText = None, None, None, None, None, None
+    root, openSampleButton, openVideoButton, focusButton, analysisButton, pathText = None, None, None, None, None, None
     focus, shapes, analysis = None, None, None
 
     # Constructor
@@ -20,17 +20,17 @@ class Main:
         self.openSampleButton = tk.Button(self.root, text="Open Sample", command = lambda: self.setSamplePath())
         self.openVideoButton = tk.Button(self.root, text="Open Video", command = lambda: self.setVideoPath())
         self.focusButton = tk.Button(self.root, text="Focus", command = lambda: self.execFocus())
-        self.startButton = tk.Button(self.root, text="Start Analysis", command = lambda: self.execAnalysis())
+        self.analysisButton = tk.Button(self.root, text="Start Analysis", command = lambda: self.execAnalysis())
         
         # Disables buttons until they have information to work with
         self.focusButton.config(state=tk.DISABLED)
-        self.startButton.config(state=tk.DISABLED)
+        self.analysisButton.config(state=tk.DISABLED)
 
         # Displaying buttons
         self.openSampleButton.pack()
         self.openVideoButton.pack()
         self.focusButton.pack()
-        self.startButton.pack()
+        self.analysisButton.pack()
 
         # Default path text
         self.pathText = tk.Text(self.root)
@@ -81,16 +81,17 @@ class Main:
     # Normalizes/disables button based on file selection status
     def enableAnaylsis(self):
         if self.samplePath != "" and self.videoPath != "":
-            self.startButton.config(state=tk.NORMAL)
+            self.analysisButton.config(state=tk.NORMAL)
         else:
-            self.startButton.config(state=tk.DISABLED)
+            self.analysisButton.config(state=tk.DISABLED)
 
 
     # Call machine learning module to start analysis
     def execAnalysis(self):
         self.analysis = Analysis(self.videoPath)
-        self.analysis.bodyRecognition()
+        self.analysis.execBodyRecognition()
 
 
+# Main executable
 if __name__ == "__main__":
     main = Main()
