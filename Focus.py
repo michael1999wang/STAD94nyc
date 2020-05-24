@@ -6,6 +6,7 @@ class Focus:
     path, image = None, None
     shapes, points = [], []
 
+
     # Constructor
     def __init__(self, path):
         # Setting up the cv2 window

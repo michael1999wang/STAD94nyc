@@ -8,6 +8,7 @@ class Analysis:
     path = None
     bodyRecognition = None
 
+
     # Constructor
     def __init__(self, path):
         self.path = path

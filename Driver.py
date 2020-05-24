@@ -5,9 +5,10 @@ from Analysis import Analysis
 
 class Main:
     # Default values
-    samplePath, videoPath, pathText, shapeText = "", "", "", ""
+    snapshotPath, videoPath, pathText, shapeText = "", "", "", ""
     root, openSampleButton, openVideoButton, focusButton, analysisButton, pathText = None, None, None, None, None, None
     focus, shapes, analysis = None, None, None
+
 
     # Constructor
     def __init__(self):
@@ -17,7 +18,7 @@ class Main:
         self.root.geometry("500x350")
 
         # Creating buttons with respective function calls
-        self.openSampleButton = tk.Button(self.root, text="Open Sample", command = lambda: self.setSamplePath())
+        self.openSampleButton = tk.Button(self.root, text="Open Snapshot", command = lambda: self.setSnapshotPath())
         self.openVideoButton = tk.Button(self.root, text="Open Video", command = lambda: self.setVideoPath())
         self.focusButton = tk.Button(self.root, text="Focus", command = lambda: self.execFocus())
         self.analysisButton = tk.Button(self.root, text="Start Analysis", command = lambda: self.execAnalysis())
@@ -41,9 +42,9 @@ class Main:
         self.root.mainloop()
 
 
-    # Prompts file selection window and sets samplePath
-    def setSamplePath(self):
-        self.samplePath = filedialog.askopenfilename()
+    # Prompts file selection window and sets snapshotPath
+    def setSnapshotPath(self):
+        self.snapshotPath = filedialog.askopenfilename()
         self.enableFocus()
         self.enableAnaylsis()
         self.updateText()
@@ -58,7 +59,7 @@ class Main:
 
     # Brings user to a modular selection page to map out dimensions of where to track during learning
     def execFocus(self):
-        self.focus = Focus(self.samplePath)
+        self.focus = Focus(self.snapshotPath)
         self.shapes = self.focus.getShapes()
         self.shapeText = self.focus.shapeString()
         self.updateText()
@@ -67,12 +68,12 @@ class Main:
     # Updates the path text
     def updateText(self):
         self.pathText.delete("1.0", tk.END)
-        self.pathText.insert(tk.CURRENT, "\nSample Path: " + self.samplePath + "\n\nVideo Path: " + self.videoPath + "\n\nShape Coordinates: " + self.shapeText)
+        self.pathText.insert(tk.CURRENT, "\nSample Path: " + self.snapshotPath + "\n\nVideo Path: " + self.videoPath + "\n\nEntry Coordinates: " + self.shapeText)
 
 
     # Enables the focus button after a sample has been chosen
     def enableFocus(self):
-        if self.samplePath != "":
+        if self.snapshotPath != "":
             self.focusButton.config(state=tk.NORMAL)
         else:
             self.focusButton.config(state=tk.DISABLED)
@@ -80,7 +81,7 @@ class Main:
 
     # Normalizes/disables button based on file selection status
     def enableAnaylsis(self):
-        if self.samplePath != "" and self.videoPath != "":
+        if self.snapshotPath != "" and self.videoPath != "":
             self.analysisButton.config(state=tk.NORMAL)
         else:
             self.analysisButton.config(state=tk.DISABLED)

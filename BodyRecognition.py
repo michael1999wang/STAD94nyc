@@ -6,6 +6,7 @@ class BodyRecognition:
     cascade = cv2.CascadeClassifier("haarcascades/haarcascade_fullbody.xml")
     path = None
 
+
     # Constructor
     def __init__(self, path):
         self.path = path
