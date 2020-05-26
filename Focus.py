@@ -9,6 +9,10 @@ class Focus:
 
     # Constructor
     def __init__(self, path):
+        # Clearing shapes from last time
+        self.shapes = []
+        self.points = []
+
         # Setting up the cv2 window
         self.path = path
         self.image = cv2.imread(path)

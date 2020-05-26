@@ -7,7 +7,7 @@ class Main:
     # Default values
     snapshotPath, videoPath, pathText, shapeText = "", "", "", ""
     root, openSampleButton, openVideoButton, focusButton, analysisButton, pathText = None, None, None, None, None, None
-    focus, shapes, analysis = None, None, None
+    shapes, analysis = None, None
 
 
     # Constructor
@@ -57,14 +57,6 @@ class Main:
         self.updateText()
 
 
-    # Brings user to a modular selection page to map out dimensions of where to track during learning
-    def execFocus(self):
-        self.focus = Focus(self.snapshotPath)
-        self.shapes = self.focus.getShapes()
-        self.shapeText = self.focus.shapeString()
-        self.updateText()
-
-
     # Updates the path text
     def updateText(self):
         self.pathText.delete("1.0", tk.END)
@@ -77,6 +69,14 @@ class Main:
             self.focusButton.config(state=tk.NORMAL)
         else:
             self.focusButton.config(state=tk.DISABLED)
+
+
+    # Brings user to a modular selection page to map out dimensions of where to track during learning
+    def execFocus(self):
+        self.focus = Focus(self.snapshotPath)
+        self.shapes = self.focus.getShapes()
+        self.shapeText = self.focus.shapeString()
+        self.updateText()
 
 
     # Normalizes/disables button based on file selection status

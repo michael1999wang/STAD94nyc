@@ -14,11 +14,6 @@ class Analysis:
         self.path = path
     
     
-    # Masking the doorways
-    def execMasking(self):
-        pass
-
-    
     # Detecting people
     def execBodyRecognition(self):
         self.bodyRecognition = BodyRecognition(self.path)
