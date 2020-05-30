@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import filedialog
 from Focus import Focus
 from Analysis import Analysis
+from Result import Result
 
 class Main:
     # Default values
@@ -40,6 +41,7 @@ class Main:
 
         # End
         self.root.mainloop()
+
 
 
     # Prompts file selection window and sets snapshotPath
@@ -89,8 +91,9 @@ class Main:
 
     # Call machine learning module to start analysis
     def execAnalysis(self):
-        self.analysis = Analysis(self.videoPath)
-        self.analysis.execBodyRecognition()
+        # self.analysis = Analysis(self.videoPath)
+        # self.analysis.execBodyRecognition()
+        result = Result("testdata.csv")
 
 
 # Main executable
