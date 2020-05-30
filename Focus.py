@@ -1,5 +1,6 @@
 from cv2 import cv2
 import numpy as np
+from Shape import Shape
 
 class Focus:
     # Default values
@@ -35,7 +36,7 @@ class Focus:
             # Submit shape
             if command == ord('a'):
                 # Save the points as a new shape
-                self.shapes.append(self.points)
+                self.shapes.append(Shape(self.points, len(self.shapes) + 1))
 
                 # Debugging lines
                 # print(self.shapes)
@@ -51,7 +52,7 @@ class Focus:
                 self.shapes = self.shapes[:-1]
                 self.image = cv2.imread(path)
                 for shape in self.shapes:
-                    cv2.polylines(self.image, [np.asarray(shape, np.int32).reshape(-1, 1, 2)], True, color, thickness, lineType = cv2.LINE_AA)
+                    cv2.polylines(self.image, [np.asarray(shape.coordinates, np.int32).reshape(-1, 1, 2)], True, color, thickness, lineType = cv2.LINE_AA)
            
             # Exit condition
             elif command == ord('q'):
@@ -76,7 +77,7 @@ class Focus:
     def shapeString(self):
         output = "\n"
         for shape in self.shapes:
-            for coordinates in shape:
+            for coordinates in shape.coordinates:
                 output += "(" + str(coordinates[0]) + "," + str(coordinates[1]) + ") "
             output += "\n"
         return output
