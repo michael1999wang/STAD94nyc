@@ -1,9 +1,11 @@
 class Shape:
     # Default values
-    coordinates = []
     label = None
+    coordinates = []
+
 
     # Constructor
-    def __init__(self, coordinates, label):
-        self.coordinates = coordinates
+    def __init__(self, label, coordinates):
         self.label = label
+        self.coordinates = coordinates
+        

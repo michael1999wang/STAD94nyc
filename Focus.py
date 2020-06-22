@@ -36,7 +36,7 @@ class Focus:
             # Submit shape
             if command == ord('a'):
                 # Save the points as a new shape
-                self.shapes.append(Shape(self.points, len(self.shapes) + 1))
+                self.shapes.append(Shape(len(self.shapes) + 1, self.points))
 
                 # Debugging lines
                 # print(self.shapes)
@@ -57,7 +57,7 @@ class Focus:
             # Exit condition
             elif command == ord('q'):
                 break
-        
+            
         # Close all windows after exit
         cv2.destroyAllWindows() 
 

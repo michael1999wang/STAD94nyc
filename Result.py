@@ -1,4 +1,5 @@
 import pandas as pd
+from matplotlib import pyplot
 
 class Result:
     # Default values
@@ -9,6 +10,15 @@ class Result:
     def __init__(self, path):
         self.path = path
         self.data = pd.read_csv(path)
-        print(self.data)
+    
+
     
     
+    # Displays data in an more readable way in the console
+    def printData(self):
+        for i, row in self.data.iterrows():
+            print("Label: " + str(row[0]) + "\tPoints: " + str(row[1]))
+
+
+result = Result("testdata.csv")
+result.printData()

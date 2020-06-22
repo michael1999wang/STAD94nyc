@@ -43,7 +43,6 @@ class Main:
         self.root.mainloop()
 
 
-
     # Prompts file selection window and sets snapshotPath
     def setSnapshotPath(self):
         self.snapshotPath = filedialog.askopenfilename()
@@ -91,9 +90,9 @@ class Main:
 
     # Call machine learning module to start analysis
     def execAnalysis(self):
-        # self.analysis = Analysis(self.videoPath)
-        # self.analysis.execBodyRecognition()
-        result = Result("testdata.csv")
+        self.analysis = Analysis(self.videoPath)
+        self.analysis.execBodyRecognition(self.shapes)
+        # result = Result("testdata.csv")
 
 
 # Main executable

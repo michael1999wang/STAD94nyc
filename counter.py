@@ -10,6 +10,7 @@ xvalues = list()
 motion = list()
 count1 = 0
 count2 = 0
+
 def find_majority(k):
     myMap = {}
     maximum = ( '', 0 ) # (occurring element, occurrences)
