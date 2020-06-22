@@ -90,8 +90,8 @@ class Main:
 
     # Call machine learning module to start analysis
     def execAnalysis(self):
-        self.analysis = Analysis(self.videoPath)
-        self.analysis.execBodyRecognition(self.shapes)
+        self.analysis = Analysis(self.videoPath, self.shapes)
+        self.analysis.execBodyRecognition()
         # result = Result("testdata.csv")
 
 
