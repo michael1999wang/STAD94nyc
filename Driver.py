@@ -1,13 +1,16 @@
 import tkinter as tk
 from tkinter import filedialog
+
+import SaveAndLoad
 from Focus import Focus
 from Analysis import Analysis
 from Result import Result
 
+
 class Main:
     # Default values
     snapshotPath, videoPath, pathText, shapeText = "", "", "", ""
-    root, openSampleButton, openVideoButton, focusButton, analysisButton, pathText = None, None, None, None, None, None
+    root, openSampleButton, openVideoButton, focusButton, saveButton, loadButton, analysisButton, pathText = None, None, None, None, None, None, None, None
     shapes, analysis = None, None
 
 
@@ -22,15 +25,20 @@ class Main:
         self.openSampleButton = tk.Button(self.root, text="Open Snapshot", command = lambda: self.setSnapshotPath())
         self.openVideoButton = tk.Button(self.root, text="Open Video", command = lambda: self.setVideoPath())
         self.focusButton = tk.Button(self.root, text="Focus", command = lambda: self.execFocus())
+        self.saveButton = tk.Button(self.root, text="Save Shapes", command = lambda: self.saveShapes())
+        self.loadButton = tk.Button(self.root, text="Load Shapes", command = lambda: self.loadShapes())
         self.analysisButton = tk.Button(self.root, text="Start Analysis", command = lambda: self.execAnalysis())
         
         # Disables buttons until they have information to work with
         self.focusButton.config(state=tk.DISABLED)
         self.analysisButton.config(state=tk.DISABLED)
+        self.saveButton.config(state=tk.DISABLED)
 
         # Displaying buttons
         self.openSampleButton.pack()
         self.openVideoButton.pack()
+        self.saveButton.pack()
+        self.loadButton.pack()
         self.focusButton.pack()
         self.analysisButton.pack()
 
@@ -78,6 +86,34 @@ class Main:
         self.shapes = self.focus.getShapes()
         self.shapeText = self.focus.shapeString()
         self.updateText()
+
+        # Enable save if there were shapes returned
+        if self.shapes is not None:
+            self.saveButton.config(state=tk.NORMAL)
+
+    
+    # Saving currently focused shapes into a local file (data/SavedShapes.json)
+    def saveShapes(self):
+        SaveAndLoad.writeJSON(self.shapes)
+
+
+    # Loading previously focused shapes into memory
+    def loadShapes(self):
+        self.shapes = SaveAndLoad.loadJSON()
+        print(self.shapes)
+
+        # Switch on the save button if shapes were loaded
+        if self.shapes is not None:
+            self.saveButton.config(state=tk.NORMAL)
+            
+            # Updating the textfield
+            self.shapeText = "\n"
+            for shape in self.shapes:
+                for coordinates in shape.coordinates:
+                    self.shapeText += "(" + str(coordinates[0]) + "," + str(coordinates[1]) + ") "
+                self.shapeText += "\n"
+            
+            self.updateText()
 
 
     # Normalizes/disables button based on file selection status
