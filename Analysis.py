@@ -42,8 +42,3 @@ class Analysis:
                 break
         cap.release()
         cv2.destroyAllWindows() 
-
-
-
-# a = Analysis("media/tokyo.mp4")
-# a.bodyRecognition()

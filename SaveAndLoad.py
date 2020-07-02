@@ -12,6 +12,8 @@ def writeJSON(shapeList):
     result = {}
     content = []
     for shape in shapeList:
+        print(shape.coordinates)
+        print(type(shape))
         # Converting string to dict
         content.append(ast.literal_eval(shape.exportJSON()))
     result["content"] = content
@@ -46,12 +48,11 @@ def loadJSON():
 
 # Main executable (testing purposes)
 if __name__ == "__main__":
-    pts = np.asarray([3,2], np.int32).reshape(-1, 1, 2)
     shapes = []
-    shapes.append(Shape("test1", pts))
-    shapes.append(Shape("test2", pts))
-    shapes.append(Shape("test3", pts))
-    shapes.append(Shape("test4", pts))
-    shapes.append(Shape("test5", pts))
+    shapes.append(Shape("test1", [[1, 2], [3, 4]]))
+    shapes.append(Shape("test2", [[1, 2], [3, 4]]))
+    shapes.append(Shape("test3", [[1, 2], [3, 4]]))
+    shapes.append(Shape("test4", [[1, 2], [3, 4]]))
+    shapes.append(Shape("test5", [[1, 2], [3, 4]]))
     writeJSON(shapes)
     loadJSON()

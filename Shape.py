@@ -17,5 +17,5 @@ class Shape:
     def exportJSON(self):
         result = {}
         result["label"] = self.label
-        result["coordinates"] = self.coordinates.tolist()[0]
+        result["coordinates"] = self.coordinates
         return json.dumps(result)
