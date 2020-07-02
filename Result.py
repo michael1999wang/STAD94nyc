@@ -20,5 +20,7 @@ class Result:
             print("Label: " + str(row[0]) + "\tPoints: " + str(row[1]))
 
 
-result = Result("testdata.csv")
-result.printData()
+# Main executable
+if __name__ == "__main__":
+    result = Result("testdata.csv")
+    result.printData()

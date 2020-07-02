@@ -12,8 +12,6 @@ def writeJSON(shapeList):
     result = {}
     content = []
     for shape in shapeList:
-        print(shape.coordinates)
-        print(type(shape))
         # Converting string to dict
         content.append(ast.literal_eval(shape.exportJSON()))
     result["content"] = content
