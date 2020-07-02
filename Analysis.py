@@ -20,12 +20,13 @@ class Analysis:
         while(cap.isOpened()):
             ret, frame = cap.read()
 
-            # Drawing polygons over initial picture
-            color = (0, 0, 255)
-            thickness = 2
-            for shape in self.shapes:
-                pts = np.asarray(shape.coordinates, np.int32).reshape(-1, 1, 2)
-                cv2.polylines(frame, [pts], True, color, thickness, lineType = cv2.LINE_AA)
+            # Drawing polygons over initial picture (if there are shapes)
+            if self.shapes is not None:
+                color = (0, 0, 255)
+                thickness = 2
+                for shape in self.shapes:
+                    pts = np.asarray(shape.coordinates, np.int32).reshape(-1, 1, 2)
+                    cv2.polylines(frame, [pts], True, color, thickness, lineType = cv2.LINE_AA)
 
             # Machine Learning 
             if ret == True:

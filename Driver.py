@@ -100,8 +100,7 @@ class Main:
     # Loading previously focused shapes into memory
     def loadShapes(self):
         self.shapes = SaveAndLoad.loadJSON()
-        print(self.shapes)
-
+        
         # Switch on the save button if shapes were loaded
         if self.shapes is not None:
             self.saveButton.config(state=tk.NORMAL)
