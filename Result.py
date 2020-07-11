@@ -1,5 +1,6 @@
 import pandas as pd
-from matplotlib import pyplot
+import matplotlib.pyplot as plt
+
 
 class Result:
     # Default values
@@ -22,5 +23,5 @@ class Result:
 
 # Main executable
 if __name__ == "__main__":
-    result = Result("testdata.csv")
+    result = Result("data/testdata.csv")
     result.printData()
