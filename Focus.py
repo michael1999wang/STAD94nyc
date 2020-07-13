@@ -36,7 +36,7 @@ class Focus:
             # Submit shape
             if command == ord('a'):
                 # Save the points as a new shape
-                self.shapes.append(Shape(len(self.shapes) + 1, self.points))
+                self.shapes.append(Shape(len(self.shapes), self.points))
 
                 # Debugging lines
                 # print(self.shapes)

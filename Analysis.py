@@ -42,3 +42,11 @@ class Analysis:
                 break
         cap.release()
         cv2.destroyAllWindows() 
+
+
+    # This function takes in the shapes (the selected doorways)
+    # and then outputs a csv file with the counts of unique people that
+    # entered each doorway
+    # See data/testdata.csv for what the file should look like
+    def countPeople(self, shapes):
+        pass

@@ -31,7 +31,7 @@ class Main:
         
         # Disables buttons until they have information to work with
         self.focusButton.config(state=tk.DISABLED)
-        self.analysisButton.config(state=tk.DISABLED)
+        # self.analysisButton.config(state=tk.DISABLED)
         self.saveButton.config(state=tk.DISABLED)
 
         # Displaying buttons
@@ -125,9 +125,9 @@ class Main:
 
     # Call machine learning module to start analysis
     def execAnalysis(self):
-        self.analysis = Analysis(self.videoPath, self.shapes)
-        self.analysis.execBodyRecognition()
-        # result = Result("testdata.csv")
+        # self.analysis = Analysis(self.videoPath, self.shapes)
+        # self.analysis.execBodyRecognition()
+        result = Result("data/testdata.csv", self.shapes)
 
 
 # Main executable
