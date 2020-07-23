@@ -6,13 +6,11 @@ from Focus import Focus
 from Analysis import Analysis
 from Result import Result
 
-
 class Main:
     # Default values
     snapshotPath, videoPath, pathText, shapeText = "", "", "", ""
     root, openSampleButton, openVideoButton, focusButton, saveButton, loadButton, analysisButton, pathText = None, None, None, None, None, None, None, None
     shapes, analysis = None, None
-
 
     # Constructor
     def __init__(self):
@@ -50,7 +48,6 @@ class Main:
         # End
         self.root.mainloop()
 
-
     # Prompts file selection window and sets snapshotPath
     def setSnapshotPath(self):
         self.snapshotPath = filedialog.askopenfilename()
@@ -58,19 +55,16 @@ class Main:
         self.enableAnaylsis()
         self.updateText()
 
-
     # Prompts file selection window and sets videoPath
     def setVideoPath(self):
         self.videoPath = filedialog.askopenfilename()
         self.enableAnaylsis()
         self.updateText()
 
-
     # Updates the path text
     def updateText(self):
         self.pathText.delete("1.0", tk.END)
         self.pathText.insert(tk.CURRENT, "\nSample Path: " + self.snapshotPath + "\n\nVideo Path: " + self.videoPath + "\n\nEntry Coordinates: " + self.shapeText)
-
 
     # Enables the focus button after a sample has been chosen
     def enableFocus(self):
@@ -78,7 +72,6 @@ class Main:
             self.focusButton.config(state=tk.NORMAL)
         else:
             self.focusButton.config(state=tk.DISABLED)
-
 
     # Brings user to a modular selection page to map out dimensions of where to track during learning
     def execFocus(self):
@@ -91,11 +84,9 @@ class Main:
         if self.shapes is not None:
             self.saveButton.config(state=tk.NORMAL)
 
-    
     # Saving currently focused shapes into a local file (data/SavedShapes.json)
     def saveShapes(self):
         SaveAndLoad.writeJSON(self.shapes)
-
 
     # Loading previously focused shapes into memory
     def loadShapes(self):
@@ -114,14 +105,12 @@ class Main:
             
             self.updateText()
 
-
     # Normalizes/disables button based on file selection status
     def enableAnaylsis(self):
         if self.snapshotPath != "" and self.videoPath != "":
             self.analysisButton.config(state=tk.NORMAL)
         else:
             self.analysisButton.config(state=tk.DISABLED)
-
 
     # Call machine learning module to start analysis
     def execAnalysis(self):

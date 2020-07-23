@@ -6,12 +6,10 @@ class Shape:
     label = None
     coordinates = []
 
-
     # Constructor
     def __init__(self, label, coordinates):
         self.label = label
         self.coordinates = coordinates
-    
 
     # Exports a JSON representation of the object
     def exportJSON(self):

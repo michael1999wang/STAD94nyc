@@ -5,7 +5,6 @@ import ast
 import json
 import os.path
     
-
 # Writes JSON file locally under the data folder to save shapes for future use
 def writeJSON(shapeList):
     # Forming the map
@@ -21,7 +20,6 @@ def writeJSON(shapeList):
     jsonFile = open("data/SavedShapes.json", "w")
     jsonFile.write(str(result))
     jsonFile.close()    
-
 
 # Loads the shapes saved in the JSON file into memory
 def loadJSON():

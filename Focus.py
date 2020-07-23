@@ -7,7 +7,6 @@ class Focus:
     path, image = None, None
     shapes, points = [], []
 
-
     # Constructor
     def __init__(self, path):
         # Clearing shapes from last time
@@ -61,17 +60,14 @@ class Focus:
         # Close all windows after exit
         cv2.destroyAllWindows() 
 
-
     # Detecting keypresses
     def create_polygon(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONUP:
             self.points.append([x, y])
-
-    
+  
     # Returning shapes for masks
     def getShapes(self):
         return self.shapes
-
     
     # Returning shape string in a more readable format
     def shapeString(self):
