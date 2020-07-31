@@ -34,8 +34,15 @@ def loadJSON():
 
         # Loading all the shapes into memory
         shapes = []
+        i = 0
         for content in contents:
             shapes.append(Shape(content["label"], content["coordinates"]))
+            try:
+                shapes[i].category = content["category"]
+                print(shapes[i].category)
+            except:
+                print("No categories yet")
+            i += 1
 
         # Closing the file and returning the loaded shapes
         jsonFile.close()

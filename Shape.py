@@ -5,6 +5,7 @@ class Shape:
     # Default values
     label = None
     coordinates = []
+    category = None
 
     # Constructor
     def __init__(self, label, coordinates):
@@ -16,4 +17,5 @@ class Shape:
         result = {}
         result["label"] = self.label
         result["coordinates"] = self.coordinates
+        result["category"] = self.category
         return json.dumps(result)

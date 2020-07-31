@@ -1,11 +1,12 @@
-from cv2 import cv2
 import numpy as np
-from Shape import Shape 
 import math
+import pandas as pd
+from cv2 import cv2
+from Shape import Shape 
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 
-class Point:
+class Pt:
     # Default values
     x = y = None
 
@@ -21,12 +22,22 @@ class Analysis:
     # Default values
     cascade = cv2.CascadeClassifier("haarcascades/haarcascade_fullbody.xml")
     path = shapes = None
-    frameBuffer = people = tracked = []
+    frameBuffer, people, tracked = [], [], []
+
+    totalhits = 0
+    hitMap = {}
 
     # Constructor
     def __init__(self, path, shapes):
         self.path = path
         self.shapes = shapes
+        self.initializeHitMap()
+
+    # Initialize hit map
+    def initializeHitMap(self):
+        # Loop through all shapes
+        for shape in self.shapes:
+            self.hitMap[shape.label] = 0
 
     # Find the midpoint of the rectangle
     def summarize(self, x, y, w, h):
@@ -60,11 +71,13 @@ class Analysis:
                 # Looping through all the squares
                 for (x, y, w, h) in bodies:
                     # Store the people in a list of point objects
-                    self.people.append(Point(self.summarize(x, y, w, h)[0], self.summarize(x, y, w, h)[1]))
+                    self.people.append(Pt(self.summarize(x, y, w, h)[0], self.summarize(x, y, w, h)[1]))
 
                     # Draw the rectangle
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
-                    self.countPeople()
+
+                    if not firstFrame:
+                        self.countPeople(frame)
 
                 # If it is the first frame, load up the tracked array with all the people
                 if firstFrame:
@@ -74,7 +87,10 @@ class Analysis:
                 # If there are already 5 frames stored, cut out the first one 
                 if len(self.frameBuffer) == 5:
                     self.frameBuffer = self.frameBuffer[1:]
+                
+                # Add all the people into the framebuffer and clear people
                 self.frameBuffer.append(self.people)
+                self.people = []
 
                 # Scale the frame down to 720p for resolution compatibility 
                 frame = cv2.resize(frame, (1280, 720))
@@ -86,7 +102,10 @@ class Analysis:
             else:
                 break
         cap.release()
-        cv2.destroyAllWindows() 
+        cv2.destroyAllWindows()
+
+        # Write the end results to the csv file
+        self.exportCSV() 
 
     # See if a point is within a given radius of the previous point
     def checkRadius(self, oldPoint, newPoint):
@@ -102,7 +121,7 @@ class Analysis:
     # and then outputs a csv file with the counts of unique people that
     # entered each doorway
     # See data/testdata.csv for what the file should look like
-    def countPeople(self):   
+    def countPeople(self, frame):   
         # Look for new people in the oldest frame
         for framePerson in self.frameBuffer[0]:
             close = False
@@ -116,42 +135,71 @@ class Analysis:
         # Keep track of the found status of each tracked person
         status = []
         for trackedPerson in self.tracked:
-            status.append((trackedPerson, False))
+            status.append([trackedPerson, False])
 
+        # Index for status reasons
+        i = 0
         # Loop through the list of tracked people
         for trackedPerson in self.tracked:
-            # Index for status reasons
-            i = 0
-
             # Loop through each frame
-            for frame in self.frameBuffer[1:]:
+            for frame in self.frameBuffer:
                 # Loop through each person in the frame
                 for framePerson in frame:
                     # If found/update is required
-                    if self.checkRadius(trackedPerson, frame):
+                    if self.checkRadius(trackedPerson, framePerson):
                         # Update the coordinates to the newest one
                         trackedPerson.x = framePerson.x
                         trackedPerson.y = framePerson.y
                         status[i][1] = True
-
             # Bump the index
             i += 1
 
         # Convert shapes into shapely objects
         shapelyShapes = []
         for shape in self.shapes:
-            shapelyShapes.append(Polygon(shape.coordinates))
-
-        # Open the csv file for writing
+            shapelyShapes.append([shape.label, Polygon(shape.coordinates)])
 
         # All orgiginal, tracked elements with a status of False are counted as "disappeared"
         for person in status:
             if not person[1]:
+                # cv2.rectangle(frame, (int(person[0].x) - 10, int(person[0].y) - 10), (int(person[0].x) + 10, int(person[0].y) + 10), (50, 255, 50), 2)
                 # Check if it is in any of the boundaries
                 for i in range(0, len(self.shapes)):
                     # Convert person to shapely object
-                    point = Point(person[0][0], person[0][1])
+                    point = Point(person[0].x, person[0].y)
                     # If the person disappeared in the doorway
-                    if shapelyShapes[i].contains(point):
-                        # Tally up in the csv file
-                        pass
+                    if shapelyShapes[i][1].contains(point):
+                        # Tally up in the hits
+                        # self.totalhits += 1
+                        # print(self.totalhits)
+                        self.hitMap[shapelyShapes[i][0]] += 1
+                        break
+                # Erase the person
+                self.tracked.remove(person[0])
+        # print(self.hitMap)
+
+    # Export to csv file
+    def exportCSV(self):
+        # Store column data
+        label, points, hits, category = [], [], [], []
+        # Iterate through map
+        i = 0
+        for element in self.hitMap:
+            label.append(element)
+            hits.append(self.hitMap[element])
+            points.append(self.shapes[i].coordinates)
+            category.append(self.shapes[i].category)
+            i += 1
+
+        # Create dataframe
+        d = {"Label": label, "Points": points, "Hits": hits, "Category": category}
+        df = pd.DataFrame(d)
+        # Write to csv file
+        df.to_csv("data/data.csv", index = False)
+        # print(df)
+
+# Main executable (for testing purposes)
+if __name__ == "__main__":
+    a = Analysis("efae", "feaf")
+    a.hitMap = {0: 100, 1: 500, 2: 25}
+    a.exportCSV()
