@@ -50,9 +50,15 @@ class Analysis:
         # Boolean to store if it is the first frame
         firstFrame = True
 
+        frameCount = 0
+        length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+
         # Loop through all the frames
         while(cap.isOpened()):
             ret, frame = cap.read()
+
+            print(str(frameCount) + "/" + str(length))
+            frameCount += 1
 
             # Drawing polygons over initial picture (if there are shapes)
             if self.shapes is not None:
@@ -65,6 +71,7 @@ class Analysis:
             # ML model processing
             if ret == True:
                 # Detecting bodies using haarcascades model
+                # imgUMat = cv2.UMat(frame)
                 imgGray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 bodies = self.cascade.detectMultiScale(imgGray, scaleFactor = 1.05, maxSize = (70, 100))
 
@@ -184,6 +191,8 @@ class Analysis:
         label, points, hits, category = [], [], [], []
         # Iterate through map
         i = 0
+        print(self.hitMap)
+        print(self.shapes)
         for element in self.hitMap:
             label.append(element)
             hits.append(self.hitMap[element])
