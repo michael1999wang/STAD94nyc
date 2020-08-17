@@ -83,11 +83,10 @@ class Analysis:
                     # Draw the rectangle
                     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-                    if not firstFrame:
-                        self.countPeople(frame)
-
                 # If it is the first frame, load up the tracked array with all the people
-                if firstFrame:
+                if not firstFrame:
+                    self.countPeople(frame)
+                else:
                     self.tracked = self.people
                     firstFrame = False
 
@@ -116,7 +115,7 @@ class Analysis:
 
     # See if a point is within a given radius of the previous point
     def checkRadius(self, oldPoint, newPoint):
-        # Use the Pythagorean theorem to check the new point is within the old point's constant defined radius
+        # Use the Pythagorean distance to check the new point is within the old point's constant defined radius
         d = math.sqrt((oldPoint.x - newPoint.x)**2 + (oldPoint.y - newPoint.y)**2)
         
         # Return the verdict as a boolean
@@ -124,10 +123,6 @@ class Analysis:
             return True
         return False
 
-    # This function takes in the shapes (the selected doorways)
-    # and then outputs a csv file with the counts of unique people that
-    # entered each doorway
-    # See data/testdata.csv for what the file should look like
     def countPeople(self, frame):   
         # Look for new people in the oldest frame
         for framePerson in self.frameBuffer[0]:

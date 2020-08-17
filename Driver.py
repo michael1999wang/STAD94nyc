@@ -53,7 +53,7 @@ class Main:
 
     # Prompts file selection window and sets snapshotPath
     def setSnapshotPath(self):
-        # self.snapshotPath = filedialog.askopenfilename()
+        self.snapshotPath = filedialog.askopenfilename()
         # self.snapshotPath = "/Users/michaelwang/Documents/GitHub/STAD94nyc/media/tokyo_snapshot.png"
         self.enableFocus()
         self.enableAnaylsis()
@@ -61,7 +61,7 @@ class Main:
 
     # Prompts file selection window and sets videoPath
     def setVideoPath(self):
-        # self.videoPath = filedialog.askopenfilename()
+        self.videoPath = filedialog.askopenfilename()
         # self.videoPath = "/Users/michaelwang/Documents/GitHub/STAD94nyc/media/tokyo_short.mp4"
         self.enableAnaylsis()
         self.updateText()
